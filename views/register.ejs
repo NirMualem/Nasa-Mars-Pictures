@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="javascripts/login.js"></script>
+    <script src="javascripts/validations.js"></script>
     <title>register</title>
 </head>
 <body>
@@ -13,21 +15,21 @@
 <form id="todo-input-form" action="/register" class="togglevisible" method="post">
     <div class="mb-3" >
         <p class="form-label">Email</p>
-        <label for="email"></label><input type="text" id = "email" class="form-control" placeholder="type email here">
+        <label for="email"></label><input type="text" id="email" name="email" class="form-control" placeholder="type email here">
         <div class="text-danger errormessage"></div>
     </div>
     <div class="mb-3" >
         <p class="form-label">First name</p>
-        <label for="First_name"></label><input type="text" id = "First_name" class="form-control" placeholder="First name">
+        <label for="First_name"></label><input type="text" id="First_name" name="First_name" class="form-control" placeholder="First name">
         <div class="text-danger errormessage"></div>
     </div>
     <div class="mb-3" >
         <p class="form-label">Family name</p>
-        <label for="Family_name"></label><input type="text" id = "Family_name" class="form-control" placeholder="Family name">
+        <label for="Family_name"></label><input type="text" id="Family_name" name="Family_name" class="form-control" placeholder="Family name">
         <div class="text-danger errormessage"></div>
     </div>
     <div style="margin: 2%">
-        <button class="btn btn-outline-secondary" type="submit" id="Search-button">register</button>
+        <button class="btn btn-outline-secondary" type="submit" id="register-button">register</button>
     </div>
 </form>
 </body>

@@ -11,8 +11,8 @@ router.get('/register', function(req, res, next) {
 });
 
 router.post('/register', function(req, res, next) {
-  console.log({data:req.body});
-  //res.render('register',  () =>{console.log(req.body)} );
+  console.log(req.body);
+  res.render('register',  () => {console.log(req.body.email)} );
   return res.redirect("/password");
 });
 
