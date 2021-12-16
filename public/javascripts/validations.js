@@ -96,3 +96,21 @@ const validatorModule = (function() {
         isExistDateOrSol:isExistDateOrSol
     };
 }) ();
+
+const validateInput = (inputElement, validateFunc ,flag) => {
+    let errorElement;
+    //check if there is one params or more.
+    if(!flag)
+        errorElement = inputElement.nextElementSibling; // the error message div
+    else
+        errorElement = inputElement[0].nextElementSibling; // the error message div
+    let v = validateFunc(inputElement); // call the validation function
+
+    errorElement.innerHTML = v.isValid ? '' : v.message; // display the error message
+    //check if there is one params or more.
+    if(!flag)
+        v.isValid ? inputElement.classList.remove("is-invalid") : inputElement.classList.add("is-invalid");
+    else
+        v.isValid ? inputElement[0].classList.remove("is-invalid") : inputElement[0].classList.add("is-invalid");
+    return v.isValid;
+};

@@ -36,9 +36,9 @@ const validateRegisterForm = (event) => {
     let family_name = document.getElementById("Family_name");
 
     // display all errors, force checking all fields
-    let v1 = validateInput(email , validatorModule.isNotEmpty);
-    let v2 = validateInput(name, validatorModule.isNotEmpty);
-    let v3 = validateInput(family_name, validatorModule.isNotEmpty);
+    let v1 = validateInput(email , validatorModule.isNotEmpty ,false);
+    let v2 = validateInput(name, validatorModule.isNotEmpty,false);
+    let v3 = validateInput(family_name, validatorModule.isNotEmpty,false);
 
     v = v1 && v2 && v3;
     return v;
@@ -46,4 +46,5 @@ const validateRegisterForm = (event) => {
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("register-button").addEventListener("click",validateRegisterForm);
+
 });

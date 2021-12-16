@@ -12,8 +12,15 @@ router.get('/register', function(req, res, next) {
 
 router.post('/register', function(req, res, next) {
   console.log(req.body);
-  res.render('register',  () => {console.log(req.body.email)} );
-  return res.redirect("/password");
+  res.render('register',  () => {
+    if(req.body.email === '' || req.body.first_name === '' || req.body.family_name === '')
+    {
+
+    }
+    else
+      return res.redirect("/password");
+  });
+
 });
 
 
