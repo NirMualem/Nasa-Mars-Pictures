@@ -22,6 +22,19 @@ const validatorModule = (function() {
     const isExistDateOrSol = function (input) {
         return checkDateRange(input);
     };
+    const isValidEmail = function(input){
+        return {
+            isValid:validEmail(input),
+            message: 'please enter valid email'
+        };
+    };
+    const validEmail = function(input) {
+        const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        if (input.value.match(regexEmail)) {
+            return true;
+        }
+        return false;
+    };
 
     //check if the date is in the range
     const checkDateRange = function(input)
@@ -93,7 +106,8 @@ const validatorModule = (function() {
         isNotSelected: isNotSelected,
         status:status,
         isNotDateOrSol:isNotDateOrSol,
-        isExistDateOrSol:isExistDateOrSol
+        isExistDateOrSol:isExistDateOrSol,
+        isValidEmail:isValidEmail
     };
 }) ();
 

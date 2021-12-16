@@ -13,16 +13,23 @@ router.get('/register', function(req, res, next) {
 router.post('/register', function(req, res, next) {
   console.log(req.body);
   res.render('register',  () => {
+    if(req.body.valid)
+    {
+      res.render('register');
+    }
+    else
+    {
+
+    }
     const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     if(req.body.email === '' || req.body.first_name === '' || req.body.family_name === ''
         || req.body.email.match(regexEmail))
     {
-      res.status(403).send(JSON.stringify(`empty user or url!`));
+      res.status(302);
     }
     else
       return res.redirect("/password");
   });
-
 });
 
 
