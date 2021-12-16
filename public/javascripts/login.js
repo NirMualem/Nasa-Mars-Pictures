@@ -1,28 +1,3 @@
-//a module for all string validation functions
-// const validatorModule = (function() {
-//     "use strict";
-//     const isNotEmpty = function (str)  {
-//         return  {
-//             isValid: (str.value.length !== 0),
-//             message: 'please enter a non empty value'
-//         };
-//     };
-//
-//     //check the status from the server.
-//     function status(response) {
-//         if (response.status >= 200 && response.status < 300) {
-//             return Promise.resolve(response);
-//         } else {
-//             return Promise.reject(new Error(response.statusText));
-//         }
-//     }
-//
-//     return {
-//         isNotEmpty: isNotEmpty,
-//         status:status,
-//     };
-// }) ();
-
 const LoginModule = (function() {
     "use strict";
 
