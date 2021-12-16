@@ -2,8 +2,11 @@
 # ex4-nodejs
 A started template for your project
 
-<h1>Your Name(s) Here</h1>
-<p>Email: student@edu.hac.ac.il</p>
+<h1>Nir mualem</h1>
+<p>Email: nirmu@edu.hac.ac.il</p>
+
+<h1>Hadas mualem</h1>
+<p>Email: hadasmu@edu.hac.ac.il</p>
 
 <h1>Execution</h1>
 <p>
