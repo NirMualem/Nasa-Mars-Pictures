@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Cookies = require('cookies');
+const keys = ['keyboard cat'];
+let cookies ;
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -31,6 +34,10 @@ router.post('/register', function(req, res, next) {
 
 
 router.get('/password', function(req, res, next) {
+  cookies = new Cookies(req, res, { keys: keys })
+  cookies.set('LastVisit', new Date().toISOString(),
+      { signed: true, maxAge: Date.now() + 50*1000 , path: '/register' })
+  res.setHeader('Content-Type', 'maxAge');
   res.render('password', { title: 'Express' });
 });
 
@@ -44,6 +51,11 @@ router.post('/password', function(req, res, next) {
     }
     else
     {
+      if(req.header.maxAge === 0)
+      {
+        return res.redirect("/register");
+      }
+
       return res.redirect("/nasa");
 
     }

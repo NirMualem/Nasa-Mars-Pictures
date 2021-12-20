@@ -13,5 +13,8 @@
     "http-errors": "^1.8.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "cookies": "^0.8.0"
   }
 }
