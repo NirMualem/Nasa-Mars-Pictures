@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Cookies = require('cookies');
 const keys = ['keyboard cat'];
-let cookies ;
 
 
 /* GET home page. */
@@ -34,16 +33,18 @@ router.post('/register', function(req, res, next) {
 
 
 router.get('/password', function(req, res, next) {
-  cookies = new Cookies(req, res, { keys: keys })
-  cookies.set('LastVisit', new Date().toISOString(),
-      { signed: true, maxAge: Date.now() + 50*1000 , path: '/register' })
-  res.setHeader('Content-Type', 'maxAge');
+  let cookies = new Cookies(req, res, { keys: keys })
+  cookies.set('start', new Date().toISOString(), { signed: false });
   res.render('password', { title: 'Express' });
 });
 
 router.post('/password', function(req, res, next) {
   console.log(req.body);
-
+  let start = new Date(req.cookies.start);
+  let now = new Date();
+  let diff = now - start;
+  if(diff > 60*1000)
+    return res.redirect("/register");
   res.render('password',  () => {
     if(req.body.confirm_pass === '' || req.body.password === '' || req.body.password !== req.body.confirm_pass)
     {
@@ -51,13 +52,7 @@ router.post('/password', function(req, res, next) {
     }
     else
     {
-      if(req.header.maxAge === 0)
-      {
-        return res.redirect("/register");
-      }
-
       return res.redirect("/nasa");
-
     }
   });
 });
