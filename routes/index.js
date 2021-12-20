@@ -18,7 +18,7 @@ router.post('/register', function(req, res, next) {
     if(email === '' || req.body.first_name === '' || req.body.family_name === ''
         || email.match(regexEmail))
     {
-      res.status(302);
+      res.status(404).send(`not valid request`);
     }
     else
       return res.redirect("/password");
@@ -29,5 +29,25 @@ router.post('/register', function(req, res, next) {
 router.get('/password', function(req, res, next) {
   res.render('password', { title: 'Express' });
 });
+
+router.post('/password', function(req, res, next) {
+  console.log(req.body);
+
+  res.render('password',  () => {
+    if(req.body.confirm_pass === '' || req.body.password === '' || req.body.password !== req.body.confirm_pass)
+    {
+      //res.status(404).send(`not valid request`);
+    }
+    //else
+      return res.redirect("/nasa");
+  });
+});
+
+router.get('/nasa', function(req, res, next) {
+  res.render('nasa', { title: 'Express' });
+});
+
+
+
 
 module.exports = router;

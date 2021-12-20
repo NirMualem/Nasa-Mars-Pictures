@@ -28,6 +28,14 @@ const validatorModule = (function() {
             message: 'please enter valid email'
         };
     };
+
+    const samePasswords = function(input){
+        return {
+            isValid:(input[0].value===input[1].value),
+            message: 'please enter valid email'
+        };
+    };
+
     const validEmail = function(input) {
         const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
         if (input.value.match(regexEmail)) {
@@ -102,12 +110,13 @@ const validatorModule = (function() {
     }
 
     return {
-        isNotEmpty: isNotEmpty,
-        isNotSelected: isNotSelected,
-        status:status,
-        isNotDateOrSol:isNotDateOrSol,
-        isExistDateOrSol:isExistDateOrSol,
-        isValidEmail:isValidEmail
+        isNotEmpty,
+        isNotSelected,
+        status,
+        isNotDateOrSol,
+        isExistDateOrSol,
+        isValidEmail,
+        samePasswords
     };
 }) ();
 
