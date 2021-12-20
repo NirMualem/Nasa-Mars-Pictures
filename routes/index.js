@@ -12,18 +12,11 @@ router.get('/register', function(req, res, next) {
 
 router.post('/register', function(req, res, next) {
   console.log(req.body);
+  let email = req.body.email;
   res.render('register',  () => {
-    if(req.body.valid)
-    {
-      res.render('register');
-    }
-    else
-    {
-
-    }
-    const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    if(req.body.email === '' || req.body.first_name === '' || req.body.family_name === ''
-        || req.body.email.match(regexEmail))
+    const regexEmail = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
+    if(email === '' || req.body.first_name === '' || req.body.family_name === ''
+        || email.match(regexEmail))
     {
       res.status(302);
     }
