@@ -10,17 +10,16 @@ const validatePassForm = (event) => {
     let confirm = document.getElementById("confirm");
 
     // display all errors, force checking all fields
-    let v1 = validateInput(pass , validatorModule.isNotEmpty ,false);
-    let v2 = validateInput(confirm, validatorModule.isNotEmpty,false);
-    let v3 = validateInput([pass , confirm] ,validatorModule.samePasswords , false )
-    v = v1 && v2 && v3;
+    let v1 = validateInput(pass , validatorModule.validPassword ,false);
+    let v2= true;
+    if(v1)
+        v2 = validateInput([confirm,pass] ,validatorModule.samePasswords , true )
+    v = v1 && v2;
     if(!v)
         event.preventDefault();
     return v;
-
 };
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("password-button").addEventListener("click",validatePassForm);
-
 });

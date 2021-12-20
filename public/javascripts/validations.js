@@ -32,7 +32,14 @@ const validatorModule = (function() {
     const samePasswords = function(input){
         return {
             isValid:(input[0].value===input[1].value),
-            message: 'please enter valid email'
+            message: 'confirm password not the same.'
+        };
+    };
+
+    const validPassword = function(input){
+        return {
+            isValid:(input.value.length>=8),
+            message: 'password must to have at least 8 characters .'
         };
     };
 
@@ -116,7 +123,8 @@ const validatorModule = (function() {
         isNotDateOrSol,
         isExistDateOrSol,
         isValidEmail,
-        samePasswords
+        samePasswords,
+        validPassword
     };
 }) ();
 

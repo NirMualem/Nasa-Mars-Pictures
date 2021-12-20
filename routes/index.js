@@ -1,5 +1,6 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const Cookies = require('cookies');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -21,7 +22,10 @@ router.post('/register', function(req, res, next) {
       res.status(404).send(`not valid request`);
     }
     else
+    {
+
       return res.redirect("/password");
+    }
   });
 });
 
@@ -36,10 +40,13 @@ router.post('/password', function(req, res, next) {
   res.render('password',  () => {
     if(req.body.confirm_pass === '' || req.body.password === '' || req.body.password !== req.body.confirm_pass)
     {
-      //res.status(404).send(`not valid request`);
+      res.status(404).send(`not valid request`);
     }
-    //else
+    else
+    {
       return res.redirect("/nasa");
+
+    }
   });
 });
 
