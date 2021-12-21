@@ -36,6 +36,9 @@ router.get('/password', function(req, res, next) {
   const cookies = new Cookies(req, res, { keys: keys })
   cookies.get('startClock', { signed: true })
   cookies.set('startClock', new Date().toISOString(), { signed: true, maxAge: 10*1000  });
+  cookies.set('email', );
+  cookies.set('first_name', );
+  cookies.set('last_name',);
   res.render('password', { title: 'Express' });
 });
 
