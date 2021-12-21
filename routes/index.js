@@ -25,8 +25,7 @@ router.post('/register', function(req, res, next) {
     }
     else
     {
-
-      return res.redirect("/password");
+      return res.render('password', { data:req.body, path: '/password'});
     }
   });
 });
@@ -34,12 +33,10 @@ router.post('/register', function(req, res, next) {
 
 router.get('/password', function(req, res, next) {
   const cookies = new Cookies(req, res, { keys: keys })
-  cookies.get('startClock', { signed: true })
-  cookies.set('startClock', new Date().toISOString(), { signed: true, maxAge: 10*1000  });
-  cookies.set('email', );
-  cookies.set('first_name', );
-  cookies.set('last_name',);
-  res.render('password', { title: 'Express' });
+  cookies.get('startClock', { signed: false })
+  cookies.set('startClock', new Date().toISOString(), { signed: false, maxAge: 10*1000  });
+  const data = {email: req.body.email , name:req.body.first_name , family: req.body.family_name};
+  res.render('password', { data:req.body , title: 'Express' });
 });
 
 router.post('/password', function(req, res, next) {
@@ -47,6 +44,7 @@ router.post('/password', function(req, res, next) {
   {
     return res.redirect("/register");
   }
+  console.log(req.body.email);
   res.render('password',  () => {
     if(req.body.confirm_pass === '' || req.body.password === '' || req.body.password !== req.body.confirm_pass)
     {
