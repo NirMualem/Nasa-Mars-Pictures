@@ -33,18 +33,25 @@ router.post('/register', function(req, res, next) {
 
 
 router.get('/password', function(req, res, next) {
-  let cookies = new Cookies(req, res, { keys: keys })
-  cookies.set('start', new Date().toISOString(), { signed: false });
+  const cookies = new Cookies(req, res, { keys: keys })
+  cookies.get('startClock', { signed: true })
+  cookies.set('startClock', new Date().toISOString(), { signed: true, maxAge: 10*1000  });
   res.render('password', { title: 'Express' });
 });
 
 router.post('/password', function(req, res, next) {
   console.log(req.body);
-  let start = new Date(req.cookies.start);
-  let now = new Date();
-  let diff = now - start;
-  if(diff > 60*1000)
+  //let start = new Date(req.cookies.start);
+  //let now = new Date();
+  //let diff = now - start;
+  //if(diff > 60*1000)
+  //  return res.redirect("/register");
+
+ // console.log("aaaaa"+ req.cookies);
+  if (req.cookies == null)
+  {
     return res.redirect("/register");
+  }
   res.render('password',  () => {
     if(req.body.confirm_pass === '' || req.body.password === '' || req.body.password !== req.body.confirm_pass)
     {
