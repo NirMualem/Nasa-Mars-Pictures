@@ -6,7 +6,7 @@ const keys = ['keyboard cat'];
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('login', { title: 'Express' });
 });
 
 router.get('/register', function(req, res, next) {
@@ -25,26 +25,30 @@ router.post('/register', function(req, res, next) {
     }
     else
     {
-      return res.render('password', { data:req.body, path: '/password'});
+      const cookies = new Cookies(req, res, { keys: keys });
+      cookies.set('passRegister', true , { signed: false});
+      cookies.set('email', req.body.email, { signed: false});
+      cookies.set('first_name', req.body.first_name, { signed: false});
+      cookies.set('family_name', req.body.family_name, { signed: false});
+      cookies.set('startClock', new Date().toISOString(), { signed: false, maxAge: 10*1000  });
+      return res.redirect("password");
     }
   });
 });
 
-
 router.get('/password', function(req, res, next) {
-  const cookies = new Cookies(req, res, { keys: keys })
-  cookies.get('startClock', { signed: false })
-  cookies.set('startClock', new Date().toISOString(), { signed: false, maxAge: 10*1000  });
-  const data = {email: req.body.email , name:req.body.first_name , family: req.body.family_name};
+  if(req.cookies["passRegister"] !== "true")
+    return res.redirect("register");
   res.render('password', { data:req.body , title: 'Express' });
 });
 
 router.post('/password', function(req, res, next) {
+  const cookies = new Cookies(req, res, { keys: keys });
+  cookies.set('passRegister', false , { signed: false});
   if (req.cookies["startClock"] == null)
   {
     return res.redirect("/register");
   }
-  console.log(req.body.email);
   res.render('password',  () => {
     if(req.body.confirm_pass === '' || req.body.password === '' || req.body.password !== req.body.confirm_pass)
     {
@@ -52,7 +56,7 @@ router.post('/password', function(req, res, next) {
     }
     else
     {
-      return res.redirect("/nasa");
+      return res.redirect("/");
     }
   });
 });
