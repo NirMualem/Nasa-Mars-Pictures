@@ -40,15 +40,7 @@ router.get('/password', function(req, res, next) {
 });
 
 router.post('/password', function(req, res, next) {
-  console.log(req.body);
-  //let start = new Date(req.cookies.start);
-  //let now = new Date();
-  //let diff = now - start;
-  //if(diff > 60*1000)
-  //  return res.redirect("/register");
-
- // console.log("aaaaa"+ req.cookies);
-  if (req.cookies == null)
+  if (req.cookies["startClock"] == null)
   {
     return res.redirect("/register");
   }
