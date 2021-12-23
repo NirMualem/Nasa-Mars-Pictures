@@ -1,4 +1,5 @@
 const express = require('express');
+const User = require('../models/User');
 const router = express.Router();
 const Cookies = require('cookies');
 const keys = ['keyboard cat'];
@@ -10,7 +11,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/register', function(req, res, next) {
-  res.render('register', { title: 'Express' });
+  res.render('register', { errorMessage:'' });
 });
 
 router.post('/register', function(req, res, next) {
@@ -22,6 +23,10 @@ router.post('/register', function(req, res, next) {
         || email.match(regexEmail))
     {
       res.status(404).send(`not valid request`);
+    }
+    else if(User.fetchAll().find(man => man.email === email))
+    {
+      res.render('register', { errorMessage:'email already register' });
     }
     else
     {
@@ -56,16 +61,20 @@ router.post('/password', function(req, res, next) {
     }
     else
     {
+      let newUser = new User(req.cookies["email"],req.cookies["first_name"],req.cookies["family_name"] , req.body.password);
+      newUser.save();
       return res.redirect("/");
     }
   });
 });
 
-router.get('/nasa', function(req, res, next) {
+router.post('/', function(req, res, next) {
+
   res.render('nasa', { title: 'Express' });
 });
 
-
-
+router.get('/nasa', function(req, res, next) {
+  res.render('nasa', { title: 'Express' });
+});
 
 module.exports = router;

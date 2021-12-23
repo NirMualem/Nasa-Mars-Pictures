@@ -16,6 +16,7 @@
     <div class="mb-3" >
         <p class="form-label">Email</p>
         <label for="email"></label><input type="email" id="Email" name="email" class="form-control" placeholder="type email here">
+        <div class="text-danger errormessage"><%= errorMessage %></div>
         <div class="text-danger errormessage"></div>
     </div>
     <div class="mb-3" >
@@ -31,6 +32,9 @@
     <div style="margin: 2%">
         <button class="btn btn-outline-secondary" type="submit" id="register-button">register</button>
     </div>
+</form>
+<form action="/" method="get">
+    <button class="btn btn-outline-secondary" type="submit" id="login-button">login</button>
 </form>
 </body>
 </html>
