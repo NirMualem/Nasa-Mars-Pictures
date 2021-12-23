@@ -43,6 +43,10 @@ const validatorModule = (function() {
         };
     };
 
+    const validatorEmailPass = function(input) {
+
+    };
+
     const validEmail = function(input) {
         const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
         if (input.value.match(regexEmail)) {
@@ -50,6 +54,7 @@ const validatorModule = (function() {
         }
         return false;
     };
+
 
     //check if the date is in the range
     const checkDateRange = function(input)

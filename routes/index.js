@@ -7,7 +7,7 @@ const keys = ['keyboard cat'];
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('login', { title: 'Express' });
+  res.render('login',{ errorMessage:'' });
 });
 
 router.get('/register', function(req, res, next) {
@@ -16,7 +16,7 @@ router.get('/register', function(req, res, next) {
 
 router.post('/register', function(req, res, next) {
   console.log(req.body);
-  let email = req.body.email;
+  let email = req.body.email.toLowerCase();
   res.render('register',  () => {
     const regexEmail = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
     if(email === '' || req.body.first_name === '' || req.body.family_name === ''
@@ -24,7 +24,7 @@ router.post('/register', function(req, res, next) {
     {
       res.status(404).send(`not valid request`);
     }
-    else if(User.fetchAll().find(man => man.email === email))
+    else if(User.fetchAll().find(user => user.email === email))
     {
       res.render('register', { errorMessage:'email already register' });
     }
@@ -69,8 +69,11 @@ router.post('/password', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-
-  res.render('nasa', { title: 'Express' });
+  let checkUser = User.fetchAll().find(user => user.email === req.body.email.toLowerCase());
+  if(checkUser && checkUser.password === req.body.password) {
+    res.render('nasa', {title: 'Express'});
+  }
+  res.render("login", { errorMessage:' The email address or password you entered isn\'t match to an account.\n' });
 });
 
 router.get('/nasa', function(req, res, next) {
