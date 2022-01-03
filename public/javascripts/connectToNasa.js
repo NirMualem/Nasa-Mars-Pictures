@@ -176,6 +176,14 @@ const NasaModal = (function() {
         clearResults()
         {
             document.getElementById("photos-result").innerHTML = "";
+            document.getElementById("nasa-form").reset();
+
+            let errors = document.getElementsByClassName("errormessage");
+            errors.forEach((err) => {
+                err.innerHTML =  '';
+                err.classList.remove("is-invalid")
+
+            });
         }
 
         //start the carousel images.
@@ -210,7 +218,7 @@ const NasaModal = (function() {
             }
             else
             {
-                params.append('date', date);
+                params.append('earth_date', date);
             }
             params.append('camera', document.getElementById("camera").value.trim());
             params.append('api_key',APIKEY);
@@ -220,7 +228,6 @@ const NasaModal = (function() {
                 .then(validatorModule.status)
                 .then(res => res.json())
                 .then(json => {
-                    console.log(json);
                     //if we dont get any image from the search.
                     if(json['photos']['length']===0)
                     {
@@ -257,24 +264,6 @@ const NasaModal = (function() {
     let solOrDateElem = document.getElementById("solOrDate");
     let missionElem = document.getElementById('mission');
     let cameraElem = document.getElementById('camera');
-
-    // const validateInput = (inputElement, validateFunc ,flag) => {
-    //     let errorElement;
-    //     //check if there is one params or more.
-    //     if(!flag)
-    //         errorElement = inputElement.nextElementSibling; // the error message div
-    //     else
-    //         errorElement = inputElement[0].nextElementSibling; // the error message div
-    //     let v = validateFunc(inputElement); // call the validation function
-    //
-    //     errorElement.innerHTML = v.isValid ? '' : v.message; // display the error message
-    //     //check if there is one params or more.
-    //     if(!flag)
-    //         v.isValid ? inputElement.classList.remove("is-invalid") : inputElement.classList.add("is-invalid");
-    //     else
-    //         v.isValid ? inputElement[0].classList.remove("is-invalid") : inputElement[0].classList.add("is-invalid");
-    //     return v.isValid;
-    // };
 
     // validate the input elements
     const validateForm = (event,solOrDateElem,missionElem, cameraElem,missionData) => {

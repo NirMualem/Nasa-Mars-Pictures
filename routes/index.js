@@ -15,7 +15,6 @@ router.get('/register', function(req, res, next) {
 });
 
 router.post('/register', function(req, res, next) {
-  console.log(req.body);
   let email = req.body.email.toLowerCase();
   res.render('register',  () => {
     const regexEmail = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
