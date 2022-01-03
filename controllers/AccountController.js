@@ -9,9 +9,11 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.PostLogin = (req, res, next) => {
-    db.Account.findOne(req.body.email.toLowerCase())
+  db.Account.findOne({
+    where:{mail:req.body.email.toLowerCase(),pass:req.body.password },
+  })
       .then(account => {
-        if (account.password === req.body.password) {
+        if (account) {
           res.render('nasa', {title: 'Express'});
         }
         else
@@ -38,7 +40,9 @@ exports.postRegister = (req, res, next) => {
       res.status(404).send(`not valid request`);
     }
     else{
-      db.Account.findById(req.body.email.toLowerCase())
+      db.Account.findOne({
+        where:{mail:req.body.email.toLowerCase()}
+      })
           .then(account => {
             if(account)
               res.render('register', { errorMessage:'email already register' });
