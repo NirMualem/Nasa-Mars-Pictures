@@ -105,7 +105,7 @@ const validatorModule = (function() {
                 return false; // NaN value, Invalid date
             return d.toISOString().slice(0,10) === str.value;
         }
-        else if(!isNaN(str.value) && Number.isInteger(str.value) && str.value > 0 )
+        else if(!isNaN(str.value) && Number.isInteger(Number(str.value)) && str.value > 0 )
         {
             return true;
         }

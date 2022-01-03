@@ -177,13 +177,14 @@ const NasaModal = (function() {
         {
             document.getElementById("photos-result").innerHTML = "";
             document.getElementById("nasa-form").reset();
+            document.getElementById("solOrDate").classList.remove("is-invalid");
+            for (let err of document.getElementsByClassName("text-danger errormessage"))
+            {
+                err.classList.remove("is-invalid");
+                err.innerHTML = '';
+            }
 
-            let errors = document.getElementsByClassName("errormessage");
-            errors.forEach((err) => {
-                err.innerHTML =  '';
-                err.classList.remove("is-invalid")
 
-            });
         }
 
         //start the carousel images.
