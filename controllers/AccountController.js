@@ -14,7 +14,9 @@ exports.PostLogin = (req, res, next) => {
   })
       .then(account => {
         if (account) {
-          res.render('nasa', {title: 'Express'});
+          //cookies.set('userName', account.first_name, { signed: false});
+          res.redirect("/nasa");
+
         }
         else
         {
