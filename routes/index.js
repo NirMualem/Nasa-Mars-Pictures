@@ -25,6 +25,10 @@ router.get('/password', AccountController.getPassword) ;
 router.post('/password', AccountController.postPassword);
 
 router.get('/nasa', function(req, res, next) {
+  if (!req.session.auth) {
+    return res.redirect('/');
+  }
+  next();
   console.log(req.cookies["userName"]);
   res.render('nasa', { title: 'Express' });
 

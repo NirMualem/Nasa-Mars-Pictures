@@ -19,6 +19,7 @@
     "sqlite3": "^5.0.2"
   },
   "devDependencies": {
-    "cookies": "^0.8.0"
+    "cookies": "^0.8.0",
+    "express-session": "^1.17.2"
   }
 }
