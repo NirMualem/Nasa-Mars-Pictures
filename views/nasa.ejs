@@ -8,12 +8,22 @@
     <title>Exercise 3 - Internet Programming Course template</title>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 
 <div class="container">
     <div class="row text-center">
         <div class="col" style="position: relative;">
             <img src="images/Mars-planet.png" alt="can't show photo" class="rounded mx-auto d-block"  style ="width: 100%">
+          <div style = "position: absolute;top: 10%; left:0%; width: 20% ">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <%= name %>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="#">Log out</a></li>
+
+                </ul>
+            </div>
+          </div>
             <div class="card opacity-50 " style = "position: absolute;top: 25%; left:30%; width: 40% ">
                 <h1 class = "d-none d-sm-block">mars site</h1>
                 <b class = "d-none d-sm-block" style="margin-bottom: 5%">the best Mars site by us</b>
@@ -154,5 +164,7 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
 </body>
 </html>
