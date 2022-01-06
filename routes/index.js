@@ -25,12 +25,11 @@ router.get('/password', AccountController.getPassword) ;
 router.post('/password', AccountController.postPassword);
 
 router.get('/nasa', function(req, res, next) {
-  //if (!req.session.auth) {
-  //  return res.redirect('/');
- // }
-  //next();
-  console.log(req.cookies["first_name"]);
-  res.render('nasa', { title: 'Express' });
+  if (!req.session.auth) {
+    return res.redirect('/');
+  }
+  next();
+  res.render('nasa', { name:req.cookies["first_name"]});
 
 });
 
