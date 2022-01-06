@@ -12,6 +12,7 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.PostLogin = (req, res, next) => {
+  req.session.name = '';
   db.Account.findOne({
     where:{mail:req.body.email.toLowerCase(),pass:req.body.password },
       })
@@ -19,8 +20,8 @@ exports.PostLogin = (req, res, next) => {
         if (account) {
           sessionUpdate(req , res);
           req.session.auth = true;
-          req.cookies.first_name = account.firstName;
-          res.redirect("/nasa");
+          req.session.name = account.firstName;
+          res.redirect("nasa");
         }
         else
         {

@@ -28,9 +28,8 @@ router.get('/nasa', function(req, res, next) {
   if (!req.session.auth) {
     return res.redirect('/');
   }
+  res.render('nasa', { name:req.session.name});
   next();
-  res.render('nasa', { name:req.cookies["first_name"]});
-
 });
 
 module.exports = router;
