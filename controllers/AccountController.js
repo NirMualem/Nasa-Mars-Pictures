@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const cookies = require('cookies');
+const Cookies = require('cookies');
 const keys = ['keyboard cat'];
 const db = require('../models');
 const session = require('express-session');
 
 exports.getLogin = (req, res, next) => {
-  sessionUpdate(req , res);
-  res.render('login',{ errorMessage:'' });
+  if (req.session.auth) {
+      sessionUpdate(req , res);
+  }  res.render('login',{ errorMessage:'' });
 };
 
 exports.PostLogin = (req, res, next) => {
@@ -16,8 +17,9 @@ exports.PostLogin = (req, res, next) => {
       })
       .then(account => {
         if (account) {
-          res.session.auth = true;
-          cookies.set('userName', account.first_name);
+          sessionUpdate(req , res);
+          req.session.auth = true;
+          req.cookies["first_name"]= account.firstName;
           res.redirect("/nasa");
         }
         else
@@ -89,8 +91,8 @@ exports.postPassword = (req, res, next) => {
     else
     {
       db.Account.create({
-        first_name: req.cookies["first_name"] ,
-        last_name: req.cookies["family_name"],
+        firstName: req.cookies["first_name"] ,
+        lastName: req.cookies["family_name"],
         mail: req.cookies["email"],
         pass:req.body.password
     })
