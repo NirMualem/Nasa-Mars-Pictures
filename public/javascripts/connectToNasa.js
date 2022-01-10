@@ -306,4 +306,7 @@ const NasaModal = (function() {
         document.getElementById("Start-Slide-view").addEventListener("click",(event) => listOfImages.startSlideShow(event ,listOfImages));
         document.getElementById("Stop-Slide-view").addEventListener("click",listOfImages.stopSlideShow);
         document.getElementById("Clear-button").addEventListener("click",listOfImages.clearResults );
+        // document.getElementById("logout-button").addEventListener("click",function(){
+        //     session.auth = false;
+        // });
     });

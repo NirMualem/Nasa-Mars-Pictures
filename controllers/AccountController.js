@@ -103,9 +103,10 @@ exports.postPassword = (req, res, next) => {
 };
 
 const sessionUpdate = (req,res) => {
-  if (req.session.auth) {
-    res.setHeader('Content-Type', 'text/html');
-    res.session.auth = false;
+  if (req.session.auth === true){
+    return res.redirect("nasa");
+
+    //req.session.auth = false;
   } else {
     req.session.auth = false;
   }

@@ -28,7 +28,7 @@ router.get('/nasa', function(req, res, next) {
   if (!req.session.auth) {
     return res.redirect('/');
   }
-  res.render('nasa', { name:req.session.name});
+  res.render('nasa', { name:req.session.name, auth: req.session.auth});
   next();
 });
 
