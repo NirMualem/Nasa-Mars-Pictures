@@ -18,6 +18,8 @@ router.get('/register', AccountController.getRegister) ;
 // /register ROUTE => POST
 router.post('/register', AccountController.postRegister);
 
+// /registerCheck ROUTE => GET
+router.get('/registerCheck/:email', AccountController.getRegisterCheck);
 // /password ROUTE => GET
 router.get('/password', AccountController.getPassword) ;
 
@@ -32,6 +34,7 @@ router.get('/nasa', function(req, res, next) {
   }
   res.render('nasa', { name:req.session.name, session: req.session});
   next();
+  window.location.reload();
 });
 
 module.exports = router;

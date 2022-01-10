@@ -4,10 +4,11 @@ const Cookies = require('cookies');
 const keys = ['keyboard cat'];
 const db = require('../models');
 const session = require('express-session');
+const bodyParser = require("body-parser");
 
 exports.getLogin = (req, res, next) => {
   if (req.session.auth) {
-      sessionUpdate(req , res);
+    sessionUpdate(req , res);
   }  res.render('login',{ errorMessage:'' });
 };
 
@@ -15,7 +16,7 @@ exports.PostLogin = (req, res, next) => {
   req.session.name = '';
   db.Account.findOne({
     where:{mail:req.body.email.toLowerCase(),pass:req.body.password },
-      })
+  })
       .then(account => {
         if (account) {
           sessionUpdate(req , res);
@@ -38,39 +39,25 @@ exports.getRegister = (req, res, next) => {
 };
 
 exports.postRegister = (req, res, next) => {
-  let email = req.body.email.toLowerCase();
+  let email = req.body.data.email.toLowerCase();
   res.render('register',  () => {
-    const regexEmail = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
-    if(email === '' || req.body.first_name === '' || req.body.family_name === ''
+    const regexEmail = "/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/";
+    if(email === '' || req.body.data.first_name === '' || req.body.data.family_name === ''
         || email.match(regexEmail))
     {
       res.status(404).send(`not valid request`);
     }
     else{
-      db.Account.findOne({
-        where:{mail:req.body.email.toLowerCase()}
-      })
-          .then(account => {
-            if(account)
-              res.render('register', { errorMessage:'email already register' });
-            else
-            {
-              const cookies = new Cookies(req, res, { keys: keys });
-              cookies.set('passRegister', true , { signed: false});
-              cookies.set('email', req.body.email, { signed: false});
-              cookies.set('first_name', req.body.first_name, { signed: false});
-              cookies.set('family_name', req.body.family_name, { signed: false});
-              cookies.set('startClock', new Date().toISOString(), { signed: false, maxAge: 10*1000  });
-              return res.redirect("password");
-            }
-          })
-          .catch((err) => {
-            return res.status(400).send(err)
-          })
+      const cookies = new Cookies(req, res, { keys: keys });
+      cookies.set('passRegister', true , { signed: false});
+      cookies.set('email', req.body.data.email, { signed: false});
+      cookies.set('first_name', req.body.data.first_name, { signed: false});
+      cookies.set('family_name', req.body.data.family_name, { signed: false});
+      cookies.set('startClock', new Date().toISOString(), { signed: false, maxAge: 10*1000  });
+      return res.redirect("/password");
     }
   });
 };
-
 exports.getPassword = (req, res, next) => {
   if(req.cookies["passRegister"] !== "true")
     return res.redirect("register");
@@ -96,18 +83,29 @@ exports.postPassword = (req, res, next) => {
         lastName: req.cookies["family_name"],
         mail: req.cookies["email"],
         pass:req.body.password
-    })
+      })
       return res.redirect("/");
     }
   });
 };
 
 exports.getLogout=(req, res, next) => {
-req.session.auth = false;
-res.redirect("/");
-
+  req.session.auth = false;
+  res.redirect("/");
 }
 
+exports.getRegisterCheck = (req, res, next) => {
+  res.setHeader('Content-Type', 'application/json');
+  db.Account.findOne({
+    where:{mail:req.params.email.toLowerCase()}
+  })
+      .then(account => {
+        if(account)
+          res.json({ "exist" : true });
+        else
+          res.json({ "exist" : false });
+      })
+}
 
 const sessionUpdate = (req,res) => {
   if (req.session.auth === true){

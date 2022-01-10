@@ -1,13 +1,18 @@
+
 const express = require('express');
-const User = require('../models/User');
+const db = require('../models');
+const RestApiController = require('../controllers/RestApiController');
+const AccountController = require("../controllers/AccountController");
+
 const router = express.Router();
 
-/* Post api for login */
-router.get('/api/login', function(req, res, next) {
-    let checkUser = User.fetchAll().find(user => user.email === req.body.email.toLowerCase());
-    if(checkUser && checkUser.password === req.body.password) {
-        res.json({"find":"true"});
-    }
-    else
-        res.json({"find":"false"});
-});
+
+router.get('/saveImages',RestApiController.getSaveImagesForUser);
+
+router.post('/addSaveImagesForUser', RestApiController.addSaveImagesForUser);
+
+router.delete('/deleteSaveImagesForUser',RestApiController.deleteSaveImagesForUser);
+
+router.delete('/deleteAllSaveImagesUser', RestApiController.deleteAllSaveImagesUser);
+
+module.exports = router;

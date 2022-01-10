@@ -94,18 +94,80 @@ const NasaModal = (function() {
                     document.getElementById("save-again-button").click();
                     return;
                 }
-
             //get the params to save from html.
             let earthDate = imgDiv.querySelector('.earth_date').textContent;
             let sol = imgDiv.querySelector('.sol').textContent;
             let camera = imgDiv.querySelector('.camera').textContent;
             let link = imgDiv.querySelector('.link').href;
-            let img = new classes.Image(id , earthDate, sol ,camera ,link);
+            let mission = imgDiv.querySelector('.mission').textContent;
 
-            listOfImages.listSaved.push(img);
+            let img = new classes.Image(id , earthDate, sol ,camera ,link);
+            //listOfImages.listSaved.push(img);
+
+            let data = {"id": id, "earthDate": earthDate,"sol":sol,
+                                        "camera":camera,"mission":mission,"path": link,"email":"hhhhh@gmail.com" };
+
+            fetch('/api/addSaveImagesForUser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
 
             this.htmlAssingSaveImage(this.generateHTMLSave(img));
             this.htmlAssingCarousel(this.generateHTMLCarousel(img,listOfImages.listSaved.length));
+        }
+
+        async getImageFromDB() {
+            fetch('/api/saveImages')
+                .then(res => res.json())
+                .then(json =>{
+                        for (const img of json) {
+                            this.htmlAssingSaveImage(this.generateHTMLSave(img));
+                        }
+                    console.log(JSON.stringify(json))
+                })
+                .catch(function(err) {
+                    // should display some error on page to inform the user
+                    console.log('Fetch Error :', err);
+                });
+        }
+
+        //check if button delete clicked and remove from html.
+        clickDeleted()
+        {
+            for (let button of document.getElementsByName("button-x")) {
+                document.getElementById(button.id).addEventListener('click', () => {
+
+                    fetch('/api/deleteSaveImagesForUser', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body:JSON.stringify({email:"hhhhh@gmail.com",imageId:button.id})
+
+                    })
+                        .then(response => response.json())
+                        .then(result => {
+                            console.log('Success:', result);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+
+                    let elementToRemove = document.getElementById(button.id);
+                    elementToRemove.parentElement.parentElement.parentElement.remove();
+                    this.removeItem(button.id);
+                });
+            }
         }
 
         //add to the html the save image.
@@ -149,10 +211,16 @@ const NasaModal = (function() {
         generateHTMLSave(img){
             return `
                 <li>
+                <div class="row">
+                 <div class="col">
                     <a href="${img.link}" class="link" role="button" target="_blank">image id: ${img.id}</a>
                     <p>earth_date: ${img.earthDate} , sol:${img.sol} , camera: sol:${img.camera}</p>
-                </li>
-            `;
+                  </div>
+                  <div class = "col">
+                    <button id=" `+ img.id + `" type="button" name = "button-x" class="btn btn-outline-danger" style="float: right">X</button>
+                </div>
+                </div>
+                </li>`
         }
 
         //generate html of the cards of the images results after search.
@@ -161,7 +229,7 @@ const NasaModal = (function() {
             <div class="card col-lg-4 col-md-6 col-sm-12">
                 <div class="card-body">
                     <img class="card-img-top" src="${photo['img_src']}" alt="mars image not found"/>
-                    <h5 class="card-title">${mission}</h5>
+                    <h5 class="card-title mission">${mission}</h5>
                     <p class="card-text camera" >${camera}</p>
                     <p class="card-text earth_date" >${photo['earth_date']}</p>
                     <p hidden class="card-text id">${photo['id']}</p>
@@ -297,7 +365,7 @@ const NasaModal = (function() {
     //listener events.
     document.addEventListener('DOMContentLoaded', function () {
         missionData.createMissionList();
-
+        listOfImages.getImageFromDB();
        document.getElementById("Search-button").addEventListener("click",function(event) {
             if (validateForm(event,solOrDateElem, missionElem, cameraElem,missionData)) {
                 listOfImages.searchImages(event, listOfImages);
@@ -306,4 +374,9 @@ const NasaModal = (function() {
         document.getElementById("Start-Slide-view").addEventListener("click",(event) => listOfImages.startSlideShow(event ,listOfImages));
         document.getElementById("Stop-Slide-view").addEventListener("click",listOfImages.stopSlideShow);
         document.getElementById("Clear-button").addEventListener("click",listOfImages.clearResults );
+
+        document.addEventListener('click', () => {
+            listOfImages.clickDeleted();
+        });
+
     });
