@@ -102,6 +102,13 @@ exports.postPassword = (req, res, next) => {
   });
 };
 
+exports.getLogout=(req, res, next) => {
+req.session.auth = false;
+res.redirect("/");
+
+}
+
+
 const sessionUpdate = (req,res) => {
   if (req.session.auth === true){
     return res.redirect("nasa");

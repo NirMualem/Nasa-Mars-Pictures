@@ -24,11 +24,13 @@ router.get('/password', AccountController.getPassword) ;
 // /password ROUTE => POST
 router.post('/password', AccountController.postPassword);
 
+router.get('/logout',AccountController.getLogout);
+
 router.get('/nasa', function(req, res, next) {
   if (!req.session.auth) {
     return res.redirect('/');
   }
-  res.render('nasa', { name:req.session.name, auth: req.session.auth});
+  res.render('nasa', { name:req.session.name, session: req.session});
   next();
 });
 
