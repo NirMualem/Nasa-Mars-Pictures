@@ -9,7 +9,10 @@ const bodyParser = require("body-parser");
 exports.getLogin = (req, res, next) => {
   if (req.session.auth) {
     sessionUpdate(req , res);
-  }  res.render('login',{ errorMessage:'', registerName: req.session.registerName});
+  }
+  if(!req.session.registerName)
+    req.session.registerName = "";
+  res.render('login',{ errorMessage:'', registerName: req.session.registerName});
 };
 
 exports.PostLogin = (req, res, next) => {
@@ -26,7 +29,7 @@ exports.PostLogin = (req, res, next) => {
         }
         else
         {
-          res.render("login", {errorMessage: ' The email address or password you entered isn\'t match to an account.\n'});
+          res.render("login", {errorMessage: 'The email address or password you entered isn\'t match to an account.\n', registerName:""});
         }
       })
       .catch((err) => {

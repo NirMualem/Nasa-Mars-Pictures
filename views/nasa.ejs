@@ -17,7 +17,7 @@
             <img src="images/Mars-planet.png" alt="can't show photo" class="rounded mx-auto d-block"  style ="width: 100%">
           <div style = "position: absolute;top: 10%; left:0%; width: 20% ">
             <div class="dropdown">
-                <button class="btn btn-main dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-light btn-main dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <%=name%>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -79,6 +79,7 @@
         </div>
         <div class="col">
             <h1 style="color: black; background-color: antiquewhite">Saved images:</h1>
+            <button class="btn btn-outline-secondary" type="button" id="delete-all">delete all</button>
             <button class="btn btn-outline-secondary" type="button" id="Start-Slide-view">Start Slide view</button>
             <button class="btn btn-outline-secondary" type="button" id="Stop-Slide-view">Stop Slide view</button>
             <ol class="overflow-auto" style="height: 20em" id="saved-image"></ol>

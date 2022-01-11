@@ -11,6 +11,8 @@
     <title>register</title>
 </head>
 <body>
+<div class="card" style="width: 60%;  margin: 0 auto; margin-top: 3%">
+    <div style="margin: 2%">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 <form id="todo-input-form" action="/register" class="togglevisible" method="post">
     <div class="mb-3" >
@@ -29,12 +31,15 @@
         <label for="Family_name"></label><input type="text" id="Family_name" name="family_name" class="form-control" placeholder="Family name">
         <div class="text-danger errormessage"></div>
     </div>
-    <div style="margin: 2%">
+    <div style="margin-top: 2%">
         <button class="btn btn-outline-secondary" type="submit" id="register-button">register</button>
     </div>
 </form>
-<form action="/" method="get">
-    <button class="btn btn-outline-secondary" type="submit" id="login-button">login</button>
-</form>
+        <div>
+            <a class="" href = "/">have account login here!</a>
+        </div>
+
+    </div>
+</div>
 </body>
 </html>

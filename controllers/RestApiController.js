@@ -51,9 +51,8 @@ exports.deleteSaveImagesForUser = (req, res, next) => {
       if (req.session.auth) {
         db.Images.destroy({where:{email:req.body.email,imageId:req.body.imageId}
         })
-            .then((image) => image.destroy({ force: true }))
             .catch((err) => {
-                console.log('***Error deleting contact', JSON.stringify(err))
+                //console.log('***Error deleting contact', JSON.stringify(err))
                 res.status(400).send(err)
             })
     }

@@ -89,7 +89,7 @@ const NasaModal = (function() {
             let imgDiv = event.currentTarget.offsetParent;
             let id = imgDiv.querySelector('.id').textContent;
             for(let i of listOfImages.listSaved)
-                if(i.id === id)
+                if(i.id === parseInt(id))
                 {
                     document.getElementById("save-again-button").click();
                     return;
@@ -102,11 +102,12 @@ const NasaModal = (function() {
             let mission = imgDiv.querySelector('.mission').textContent;
 
             let img = new classes.Image(id , earthDate, sol ,camera ,link);
-            //listOfImages.listSaved.push(img);
+
+            listOfImages.listSaved.push(img);
             let email = document.getElementById("emailFromSession").innerText;
             let data = {"imageId": id, "earthDate": earthDate,"sol":sol,
                                         "camera":camera,"mission":mission,"path": link,"email":email};
-            let numOfPic = 0;
+
             fetch('/api/addSaveImagesForUser', {
                 method: 'POST',
                 headers: {
@@ -122,23 +123,25 @@ const NasaModal = (function() {
                     console.error('Error:', error);
                 });
 
-            this.htmlAssingSaveImage(this.generateHTMLSave(img));
-            this.htmlAssingCarousel(this.generateHTMLCarousel(img,2));
+            //update the images in the screen.
+            this.getImageFromDB(listOfImages);
         }
 
-        async getImageFromDB() {
+        async getImageFromDB(listOfImages) {
             let email = document.getElementById("emailFromSession").innerText;
             fetch('/api/saveImages/'+ email)
                 .then(res => res.json())
                 .then(json =>{
                     let i =0;
+                    listOfImages.listSaved = [];
                         for (const imageDB of json) {
                             let img = new classes.Image(imageDB.imageId,imageDB.earthDate,imageDB.sol,imageDB.camera,imageDB.path);
-                            this.htmlAssingSaveImage(this.generateHTMLSave(img));
-                            this.htmlAssingCarousel(this.generateHTMLCarousel(img,i));
+                            listOfImages.listSaved.push(img);
                             i ++;
                         }
-                    console.log(JSON.stringify(json))
+                    this.htmlAssingCarousel(this.generateHTMLCarousel(listOfImages));
+                    this.htmlAssingSaveImage(this.generateHTMLSave(listOfImages));
+                    //console.log(JSON.stringify(json))
                 })
                 .catch(function(err) {
                     // should display some error on page to inform the user
@@ -147,7 +150,7 @@ const NasaModal = (function() {
         }
 
         //check if button delete clicked and remove from html.
-        clickDeleted()
+        clickDeleted(event ,listOfImages)
         {
             for (let button of document.getElementsByName("button-x")) {
                 document.getElementById(button.id).addEventListener('click', () => {
@@ -168,24 +171,43 @@ const NasaModal = (function() {
                         .catch(error => {
                             console.error('Error:', error);
                         });
-
-                    let elementToRemove = document.getElementById(button.id);
-                    elementToRemove.parentElement.parentElement.parentElement.remove();
-                    this.removeItem(button.id);
                 });
             }
+            this.getImageFromDB(listOfImages);
+        }
+
+        deleteAllImages(event ,listOfImages){
+            let email = document.getElementById("emailFromSession").innerText;
+
+            fetch('/api/deleteAllSaveImagesUser', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({email:email})
+
+            })
+                .then(response => response.json())
+                .then(result => {
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+            this.getImageFromDB(listOfImages);
         }
 
         //add to the html the save image.
         htmlAssingSaveImage(res)
         {
-            document.getElementById("saved-image").innerHTML += res;
+            document.getElementById("saved-image").innerHTML = res;
 
         }
 
         //add to the html the bootstrap carousel of saved images.
         htmlAssingCarousel(res){
-            document.getElementById("carousel-inner").innerHTML += res;
+            document.getElementById("carousel-inner").innerHTML = res;
         }
 
         //add to the html the photo results after search.
@@ -195,11 +217,15 @@ const NasaModal = (function() {
         }
 
         //generate html of the carousel saved images.
-        generateHTMLCarousel(img , size)
+        generateHTMLCarousel(listOfImages)
         {
             let res = "";
-            if(size === 0)
+            let first = true;
+            for(let img of listOfImages.listSaved){
+            if(first){
                 res += `<div class="carousel-item active">`;
+                first= false;
+            }
             else
                 res += `<div class="carousel-item">`;
 
@@ -210,13 +236,15 @@ const NasaModal = (function() {
                     <a href="${img.link}" style="margin: auto" class="btn btn-info link carousel-indicators" role="button" target="_blank">Full size</a>
                     </div>
                 </div>`;
-            console.log(res);
+            }
             return res;
         }
 
         //generate html of the saved images list.
-        generateHTMLSave(img){
-            return `
+        generateHTMLSave(listOfImages){
+            let res = "";
+            for(let img of listOfImages.listSaved){
+                res += `
                 <li>
                 <div class="row">
                  <div class="col">
@@ -228,6 +256,8 @@ const NasaModal = (function() {
                 </div>
                 </div>
                 </li>`
+            }
+            return res;
         }
 
         //generate html of the cards of the images results after search.
@@ -265,24 +295,12 @@ const NasaModal = (function() {
         //start the carousel images.
         startSlideShow(event ,list)
         {
-            let email = document.getElementById("emailFromSession").innerText;
-            fetch('/api/saveImages/'+ email)
-                .then(res => res.json())
-                .then(json =>{
-                    if (json.length === 0)
-                        return;
-                    else{
-                        document.getElementById("carousel-card").style.display = "block";
-                        document.getElementById("carousel").style.display = "block";
-                    }
-                    console.log(JSON.stringify(json))
-                })
-                .catch(function(err) {
-                    // should display some error on page to inform the user
-                    console.log('Fetch Error :', err);
-                });
-
-
+            if(list.length===0)
+                return;
+            else {
+                document.getElementById("carousel-card").style.display = "block";
+                document.getElementById("carousel").style.display = "block";
+            }
         }
 
         //stop the carousel images.
@@ -291,6 +309,7 @@ const NasaModal = (function() {
             document.getElementById("carousel-card").style.display = "none";
             document.getElementById("carousel").style.display = "none";
         }
+
 
         //get from the server the images of the results search.
         searchImages(event,listOfImages) {
@@ -386,7 +405,7 @@ const NasaModal = (function() {
     //listener events.
     document.addEventListener('DOMContentLoaded', function () {
         missionData.createMissionList();
-        listOfImages.getImageFromDB();
+        listOfImages.getImageFromDB(listOfImages);
        document.getElementById("Search-button").addEventListener("click",function(event) {
             if (validateForm(event,solOrDateElem, missionElem, cameraElem,missionData)) {
                 listOfImages.searchImages(event, listOfImages);
@@ -395,9 +414,9 @@ const NasaModal = (function() {
         document.getElementById("Start-Slide-view").addEventListener("click",(event) => listOfImages.startSlideShow(event ,listOfImages));
         document.getElementById("Stop-Slide-view").addEventListener("click",listOfImages.stopSlideShow);
         document.getElementById("Clear-button").addEventListener("click",listOfImages.clearResults );
+        document.getElementById("delete-all").addEventListener("click",(event) => listOfImages.deleteAllImages(event ,listOfImages) );
 
-        document.addEventListener('click', () => {
-            listOfImages.clickDeleted();
+        document.addEventListener('click', function(event) {
+                listOfImages.clickDeleted(event, listOfImages);
         });
-
     });
