@@ -103,10 +103,10 @@ const NasaModal = (function() {
 
             let img = new classes.Image(id , earthDate, sol ,camera ,link);
             //listOfImages.listSaved.push(img);
-
-            let data = {"id": id, "earthDate": earthDate,"sol":sol,
-                                        "camera":camera,"mission":mission,"path": link,"email":"hhhhh@gmail.com" };
-
+            let email = document.getElementById("emailFromSession").innerText;
+            let data = {"imageId": id, "earthDate": earthDate,"sol":sol,
+                                        "camera":camera,"mission":mission,"path": link,"email":email};
+            let numOfPic = 0;
             fetch('/api/addSaveImagesForUser', {
                 method: 'POST',
                 headers: {
@@ -123,15 +123,20 @@ const NasaModal = (function() {
                 });
 
             this.htmlAssingSaveImage(this.generateHTMLSave(img));
-            this.htmlAssingCarousel(this.generateHTMLCarousel(img,listOfImages.listSaved.length));
+            this.htmlAssingCarousel(this.generateHTMLCarousel(img,2));
         }
 
         async getImageFromDB() {
-            fetch('/api/saveImages')
+            let email = document.getElementById("emailFromSession").innerText;
+            fetch('/api/saveImages/'+ email)
                 .then(res => res.json())
                 .then(json =>{
-                        for (const img of json) {
+                    let i =0;
+                        for (const imageDB of json) {
+                            let img = new classes.Image(imageDB.imageId,imageDB.earthDate,imageDB.sol,imageDB.camera,imageDB.path);
                             this.htmlAssingSaveImage(this.generateHTMLSave(img));
+                            this.htmlAssingCarousel(this.generateHTMLCarousel(img,i));
+                            i ++;
                         }
                     console.log(JSON.stringify(json))
                 })
@@ -146,13 +151,14 @@ const NasaModal = (function() {
         {
             for (let button of document.getElementsByName("button-x")) {
                 document.getElementById(button.id).addEventListener('click', () => {
+                    let email = document.getElementById("emailFromSession").innerText;
 
                     fetch('/api/deleteSaveImagesForUser', {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body:JSON.stringify({email:"hhhhh@gmail.com",imageId:button.id})
+                        body:JSON.stringify({email:email,imageId:button.id})
 
                     })
                         .then(response => response.json())
@@ -192,8 +198,8 @@ const NasaModal = (function() {
         generateHTMLCarousel(img , size)
         {
             let res = "";
-            if(size === 1)
-                res += `<div class="carousel-item  active"">`;
+            if(size === 0)
+                res += `<div class="carousel-item active">`;
             else
                 res += `<div class="carousel-item">`;
 
@@ -204,6 +210,7 @@ const NasaModal = (function() {
                     <a href="${img.link}" style="margin: auto" class="btn btn-info link carousel-indicators" role="button" target="_blank">Full size</a>
                     </div>
                 </div>`;
+            console.log(res);
             return res;
         }
 
@@ -217,7 +224,7 @@ const NasaModal = (function() {
                     <p>earth_date: ${img.earthDate} , sol:${img.sol} , camera: sol:${img.camera}</p>
                   </div>
                   <div class = "col">
-                    <button id=" `+ img.id + `" type="button" name = "button-x" class="btn btn-outline-danger" style="float: right">X</button>
+                    <button id="`+ img.id + `" type="button" name = "button-x" class="btn btn-outline-danger" style="float: right">X</button>
                 </div>
                 </div>
                 </li>`
@@ -258,10 +265,24 @@ const NasaModal = (function() {
         //start the carousel images.
         startSlideShow(event ,list)
         {
-            if (list.listSaved.length === 0)
-                return;
-            document.getElementById("carousel-card").style.display = "block";
-            document.getElementById("carousel").style.display = "block";
+            let email = document.getElementById("emailFromSession").innerText;
+            fetch('/api/saveImages/'+ email)
+                .then(res => res.json())
+                .then(json =>{
+                    if (json.length === 0)
+                        return;
+                    else{
+                        document.getElementById("carousel-card").style.display = "block";
+                        document.getElementById("carousel").style.display = "block";
+                    }
+                    console.log(JSON.stringify(json))
+                })
+                .catch(function(err) {
+                    // should display some error on page to inform the user
+                    console.log('Fetch Error :', err);
+                });
+
+
         }
 
         //stop the carousel images.

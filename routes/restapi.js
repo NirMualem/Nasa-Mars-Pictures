@@ -7,7 +7,7 @@ const AccountController = require("../controllers/AccountController");
 const router = express.Router();
 
 
-router.get('/saveImages',RestApiController.getSaveImagesForUser);
+router.get('/saveImages/:email',RestApiController.getSaveImagesForUser);
 
 router.post('/addSaveImagesForUser', RestApiController.addSaveImagesForUser);
 

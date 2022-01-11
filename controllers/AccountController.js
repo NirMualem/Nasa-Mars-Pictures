@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 exports.getLogin = (req, res, next) => {
   if (req.session.auth) {
     sessionUpdate(req , res);
-  }  res.render('login',{ errorMessage:'' });
+  }  res.render('login',{ errorMessage:'', registerName: req.session.registerName});
 };
 
 exports.PostLogin = (req, res, next) => {
@@ -84,6 +84,8 @@ exports.postPassword = (req, res, next) => {
         mail: req.cookies["email"],
         pass:req.body.password
       })
+
+      req.session.registerName = req.cookies["first_name"];
       return res.redirect("/");
     }
   });
@@ -108,11 +110,13 @@ exports.getRegisterCheck = (req, res, next) => {
 }
 
 const sessionUpdate = (req,res) => {
-  if (req.session.auth === true){
+  if (req.session && req.session.auth === true){
     return res.redirect("nasa");
 
     //req.session.auth = false;
   } else {
     req.session.auth = false;
+    req.session.email = req.body.email;
+    req.session.registerName = "";
   }
 }
