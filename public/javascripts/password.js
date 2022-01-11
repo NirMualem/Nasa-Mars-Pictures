@@ -6,8 +6,8 @@ const PassModule = (function() {
 // validate the input elements
 const validatePassForm = (event) => {
     let v;
-    let pass = document.getElementById("password").trim();
-    let confirm = document.getElementById("confirm").trim();
+    let pass = document.getElementById("password");
+    let confirm = document.getElementById("confirm");
 
     // display all errors, force checking all fields
     let v1 = validateInput(pass , validatorModule.validPassword ,false);

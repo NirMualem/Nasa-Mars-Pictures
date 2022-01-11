@@ -90,5 +90,3 @@ exports.getRegisterCheck = (req, res, next) => {
         })
 
 }
-
-

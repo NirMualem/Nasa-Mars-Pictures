@@ -16,6 +16,4 @@ router.delete('/deleteSaveImagesForUser',RestApiController.deleteSaveImagesForUs
 
 router.delete('/deleteAllSaveImagesUser', RestApiController.deleteAllSaveImagesUser);
 
-router.delete('/user', RestApiController.getUser);
-
 module.exports = router;
