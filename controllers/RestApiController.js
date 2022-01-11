@@ -76,3 +76,16 @@ exports.deleteAllSaveImagesUser = (req, res, next) => {
          res.redirect("/");
      }
 };
+
+exports.getRegisterCheck = (req, res, next) => {
+    res.setHeader('Content-Type', 'application/json');
+    db.Account.findOne({
+        where:{mail:req.params.email.toLowerCase()}
+    })
+        .then(account => {
+            if(account)
+                res.json({ "exist" : true });
+            else
+                res.json({ "exist" : false });
+        })
+}

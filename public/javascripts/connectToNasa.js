@@ -86,6 +86,8 @@ const NasaModal = (function() {
 
         //add to list of save image if click on button save.
         addToSavedImage(event, listOfImages) {
+            //update the images in the screen.
+            this.getImageFromDB(listOfImages);
             let imgDiv = event.currentTarget.offsetParent;
             let id = imgDiv.querySelector('.id').textContent;
             for(let i of listOfImages.listSaved)

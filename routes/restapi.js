@@ -6,6 +6,7 @@ const AccountController = require("../controllers/AccountController");
 
 const router = express.Router();
 
+router.get('/registerCheck/:email', RestApiController.getRegisterCheck);
 
 router.get('/saveImages/:email',RestApiController.getSaveImagesForUser);
 
