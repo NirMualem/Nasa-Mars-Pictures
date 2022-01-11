@@ -3,7 +3,6 @@ const router = express.Router();
 const db = require('../models');
 const session = require('express-session');
 
-
 exports.getSaveImagesForUser = (req, res, next) => {
     if (req.session.auth) {
         db.Images.findAll({
@@ -13,7 +12,7 @@ exports.getSaveImagesForUser = (req, res, next) => {
                 res.status(200).json(images)
             })
             .catch(error => {
-                res.status(400).send(error)
+                res.redirect("/");
             });
     }
     else
@@ -37,8 +36,7 @@ exports.addSaveImagesForUser = (req, res, next) => {
             res.status(200).json(images)
         })
         .catch((err) => {
-            console.log('***There was an error creating a contact', JSON.stringify(image))
-            return res.status(400).send(err)
+            res.redirect("/");
         })
     }
     else
@@ -52,8 +50,7 @@ exports.deleteSaveImagesForUser = (req, res, next) => {
         db.Images.destroy({where:{email:req.body.email,imageId:req.body.imageId}
         })
             .catch((err) => {
-                //console.log('***Error deleting contact', JSON.stringify(err))
-                res.status(400).send(err)
+                res.redirect("/");
             })
     }
     else
@@ -63,12 +60,12 @@ exports.deleteSaveImagesForUser = (req, res, next) => {
 };
 
 exports.deleteAllSaveImagesUser = (req, res, next) => {
+
     if (req.session.auth) {
         return db.Images.destroy({where:{email:req.body.email}
         })
             .catch((err) => {
-                console.log('***Error deleting contact', JSON.stringify(err))
-                res.status(400).send(err)
+                res.redirect("/");
             })
      }
      else
@@ -88,4 +85,8 @@ exports.getRegisterCheck = (req, res, next) => {
             else
                 res.json({ "exist" : false });
         })
+        .catch((err) => {
+            res.redirect("/register");
+        })
 }
+

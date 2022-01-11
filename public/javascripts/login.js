@@ -4,8 +4,8 @@ const LoginModule = (function() {
 });
 
 const validatorLogin = (event) =>{
-    let email = document.getElementById("Email");
-    let pass = document.getElementById("Password");
+    let email = document.getElementById("Email").trim();
+    let pass = document.getElementById("Password").trim();
 
     var myParams = { method: 'post',
         email: email,
