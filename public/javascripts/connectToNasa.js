@@ -171,9 +171,10 @@ const NasaModal = (function() {
                         .catch(error => {
                             console.error('Error:', error);
                         });
+                    this.getImageFromDB(listOfImages);
                 });
+
             }
-            this.getImageFromDB(listOfImages);
         }
 
         deleteAllImages(event ,listOfImages){

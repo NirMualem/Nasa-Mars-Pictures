@@ -10,8 +10,6 @@ exports.getLogin = (req, res, next) => {
   if (req.session.auth) {
     sessionUpdate(req , res);
   }
-  if(!req.session.registerName)
-    req.session.registerName = "";
   res.render('login',{ errorMessage:'', registerName: req.session.registerName});
 };
 
@@ -38,6 +36,9 @@ exports.PostLogin = (req, res, next) => {
 };
 
 exports.getRegister = (req, res, next) => {
+  if (req.session.auth) {
+    sessionUpdate(req , res);
+  }
   res.render('register', { errorMessage:'' });
 };
 
