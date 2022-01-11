@@ -52,16 +52,30 @@ exports.postRegister = (req, res, next) => {
       res.status(404).send(`not valid request`);
     }
     else{
-      const cookies = new Cookies(req, res, { keys: keys });
-      cookies.set('passRegister', true , { signed: false});
-      cookies.set('email', req.body.data.email, { signed: false});
-      cookies.set('first_name', req.body.data.first_name, { signed: false});
-      cookies.set('family_name', req.body.data.family_name, { signed: false});
-      cookies.set('startClock', new Date().toISOString(), { signed: false, maxAge: 10*1000  });
-      return res.redirect("/password");
+      db.Account.findOne({
+        where:{mail:req.body.email.toLowerCase()}
+      })
+          .then(account => {
+            if(account)
+              res.render('register', { errorMessage:'email already register' });
+            else
+            {
+              const cookies = new Cookies(req, res, { keys: keys });
+              cookies.set('passRegister', true , { signed: false});
+              cookies.set('email', req.body.data.email, { signed: false});
+              cookies.set('first_name', req.body.data.first_name, { signed: false});
+              cookies.set('family_name', req.body.data.family_name, { signed: false});
+              cookies.set('startClock', new Date().toISOString(), { signed: false, maxAge: 60*1000  });
+              return res.redirect("/password");
+            }
+          })
+          .catch((err) => {
+            return res.status(400).send(err)
+          });
     }
   });
 };
+
 exports.getPassword = (req, res, next) => {
   if(req.cookies["passRegister"] !== "true")
     return res.redirect("register");
