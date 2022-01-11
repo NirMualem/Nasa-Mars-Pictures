@@ -31,7 +31,7 @@ exports.PostLogin = (req, res, next) => {
         }
       })
       .catch((err) => {
-        return res.status(400).send(err)
+        return res.redirect("login", {errorMessage: 'server problem . please try again later', registerName:""});
       })
 };
 
@@ -45,7 +45,7 @@ exports.getRegister = (req, res, next) => {
 exports.postRegister = (req, res, next) => {
   let email = req.body.data.email.toLowerCase();
   res.render('register',  () => {
-    const regexEmail = "/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/";
+    const regexEmail = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
     if(email === '' || req.body.data.first_name === '' || req.body.data.family_name === ''
         || email.match(regexEmail))
     {
@@ -53,7 +53,7 @@ exports.postRegister = (req, res, next) => {
     }
     else{
       db.Account.findOne({
-        where:{mail:req.body.email.toLowerCase()}
+        where:{mail:req.body.data.email.toLowerCase()}
       })
           .then(account => {
             if(account)
@@ -66,15 +66,16 @@ exports.postRegister = (req, res, next) => {
               cookies.set('first_name', req.body.data.first_name, { signed: false});
               cookies.set('family_name', req.body.data.family_name, { signed: false});
               cookies.set('startClock', new Date().toISOString(), { signed: false, maxAge: 60*1000  });
-              return res.redirect("/password");
+              return res.redirect("password");
             }
           })
           .catch((err) => {
-            return res.status(400).send(err)
-          });
+            return res.render('register', { errorMessage:'server problem . please try again later' });
+          })
     }
   });
 };
+
 
 exports.getPassword = (req, res, next) => {
   if(req.cookies["passRegister"] !== "true")
