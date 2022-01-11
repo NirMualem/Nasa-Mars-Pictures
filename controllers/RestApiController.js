@@ -88,5 +88,6 @@ exports.getRegisterCheck = (req, res, next) => {
         .catch((err) => {
             res.redirect("/register");
         })
+
 }
 
