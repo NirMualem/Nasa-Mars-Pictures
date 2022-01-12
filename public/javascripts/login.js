@@ -16,4 +16,7 @@ const validatorLogin = (event) =>{
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("login").addEventListener("click",validatorLogin);
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
 });

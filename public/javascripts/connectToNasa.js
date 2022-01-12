@@ -85,7 +85,7 @@ const NasaModal = (function() {
         }
 
         //add to list of save image if click on button save.
-        addToSavedImage(event, listOfImages) {
+        addToSavedImage=async (event, listOfImages)=> {
             //update the images in the screen.
             this.getImageFromDB(listOfImages);
             let imgDiv = event.currentTarget.offsetParent;
@@ -110,7 +110,7 @@ const NasaModal = (function() {
             let data = {"imageId": id, "earthDate": earthDate,"sol":sol,
                                         "camera":camera,"mission":mission,"path": link,"email":email};
 
-            fetch('/api/addSaveImagesForUser', {
+            await fetch('/api/addSaveImagesForUser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -129,9 +129,9 @@ const NasaModal = (function() {
             this.getImageFromDB(listOfImages);
         }
 
-        async getImageFromDB(listOfImages) {
+        async getImageFromDB (listOfImages) {
             let email = document.getElementById("emailFromSession").innerText;
-            fetch('/api/saveImages/'+ email)
+            await fetch('/api/saveImages/'+ email)
                 .then(res => res.json())
                 .then(json =>{
                     let i =0;
@@ -152,13 +152,13 @@ const NasaModal = (function() {
         }
 
         //check if button delete clicked and remove from html.
-        clickDeleted(event ,listOfImages)
+        async clickDeleted(event ,listOfImages)
         {
             for (let button of document.getElementsByName("button-x")) {
                 document.getElementById(button.id).addEventListener('click', () => {
                     let email = document.getElementById("emailFromSession").innerText;
 
-                    fetch('/api/deleteSaveImagesForUser', {
+                     fetch('/api/deleteSaveImagesForUser', {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'
@@ -179,10 +179,10 @@ const NasaModal = (function() {
             }
         }
 
-        deleteAllImages(event ,listOfImages){
+        async deleteAllImages(event ,listOfImages){
             let email = document.getElementById("emailFromSession").innerText;
 
-            fetch('/api/deleteAllSaveImagesUser', {
+           await fetch('/api/deleteAllSaveImagesUser', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'

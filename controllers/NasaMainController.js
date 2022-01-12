@@ -7,6 +7,5 @@ exports.getNasa =('/nasa', function(req, res, next) {
         return res.redirect('/');
     }
     res.render('nasa', { name:req.session.name, session: req.session});
-    next();
-    window.location.reload();
+    res.end();
 });

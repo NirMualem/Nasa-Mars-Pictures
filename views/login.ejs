@@ -13,10 +13,10 @@
 <body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 <div class="card" style="width: 60%;  margin: 0 auto; margin-top: 3%">
-    <div style="margin: 2%">
+    <div id = sessionName style="margin: 2%">
 <% if (registerName && registerName !== null && registerName !== "") { %>
     <div style = "margin-top: 5%;text-align: center" >
-        <p class="font-weight-light" >welcome <%=registerName%> you are registered</p>
+        <p id = "sessionName" class="font-weight-light" >welcome <%=registerName%> you are registered</p>
     </div>
 <% }%>
 

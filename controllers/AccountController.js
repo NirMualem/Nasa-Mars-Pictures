@@ -31,7 +31,7 @@ exports.PostLogin = (req, res, next) => {
         }
       })
       .catch((err) => {
-        return res.redirect("login", {errorMessage: 'server problem . please try again later', registerName:""});
+        return res.redirect("/");
       })
 };
 
