@@ -4,14 +4,20 @@ const LoginModule = (function() {
 });
 
 const validatorLogin = (event) =>{
-    let email = document.getElementById("Email").trim();
-    let pass = document.getElementById("Password").trim();
+    let email = document.getElementById("Email");
+    let pass = document.getElementById("Password");
 
-    var myParams = { method: 'post',
-        email: email,
-        pass: pass ,
-    };
+    // display all errors, force checking all fields
+    let v1 = validateInput(email, validatorModule.isValidEmail, false);
+    let v2 = validateInput(pass, validatorModule.isNotEmpty, false);
 
+    let v = v1 && v2;
+
+    if (!v)
+        event.preventDefault();
+
+
+    return v;
 }
 
 document.addEventListener('DOMContentLoaded', function () {
