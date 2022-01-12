@@ -176,23 +176,18 @@ const NasaModal = (function() {
         async deleteAllImages(event ,listOfImages){
             let email = document.getElementById("emailFromSession").innerText;
 
-           await fetch('/api/deleteAllSaveImagesUser', {
+             fetch('/api/deleteAllSaveImagesUser', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body:JSON.stringify({email:email})
-
             })
-                .then(response => response.json())
-                .then(result => {
-                    console.log('Success:', result);
-                })
                 .catch(error => {
                     console.error('Error:', error);
                 });
 
-            this.getImageFromDB(listOfImages);
+           await this.getImageFromDB(listOfImages);
         }
 
         //add to the html the save image.
