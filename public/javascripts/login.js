@@ -14,7 +14,11 @@ const validatorLogin = (event) =>{
     let v = v1 && v2;
 
     if (!v)
+    {
+        document.getElementById("errormessageLogin").innerText = "";
         event.preventDefault();
+    }
+
 
 
     return v;
