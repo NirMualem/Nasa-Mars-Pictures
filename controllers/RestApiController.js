@@ -22,22 +22,28 @@ exports.getSaveImagesForUser = (req, res, next) => {
 };
 
 exports.addSaveImagesForUser = (req, res, next) => {
-    if (req.session.auth) {
-    return db.Images.create({
-        imageId: req.body.imageId,
-        earthDate:req.body.earthDate,
-        sol: req.body.sol,
-        camera: req.body.camera,
-        mission: req.body.mission,
-        path: req.body.path,
-        email: req.body.email
-    })
-        .then(images => {
-            res.status(200).json(images)
-        })
-        .catch((err) => {
-            res.redirect("/");
-        })
+     if (req.session.auth) {
+         db.Images.count({ where: {imageId: req.body.imageId, email: req.body.email}})
+             .then(count => {
+                 if (count != 0) {
+                     return false;
+                 }
+                 return db.Images.create({
+                     imageId: req.body.imageId,
+                     earthDate:req.body.earthDate,
+                     sol: req.body.sol,
+                     camera: req.body.camera,
+                     mission: req.body.mission,
+                     path: req.body.path,
+                     email: req.body.email
+                 })
+                     .then(images => {
+                         res.status(200).json(images)
+                     })
+                     .catch((err) => {
+                         res.redirect("/");
+                     })
+             });
     }
     else
     {

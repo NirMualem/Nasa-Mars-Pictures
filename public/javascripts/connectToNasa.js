@@ -87,7 +87,7 @@ const NasaModal = (function() {
         //add to list of save image if click on button save.
         addToSavedImage=async (event, listOfImages)=> {
             //update the images in the screen.
-            this.getImageFromDB(listOfImages);
+             this.getImageFromDB(listOfImages);
             let imgDiv = event.currentTarget.offsetParent;
             let id = imgDiv.querySelector('.id').textContent;
             for(let i of listOfImages.listSaved)
@@ -118,7 +118,6 @@ const NasaModal = (function() {
                 body:JSON.stringify(data)
             })
                 .then(response => {
-
                     //update the images in the screen.
                     this.getImageFromDB(listOfImages)
                 })
@@ -176,7 +175,9 @@ const NasaModal = (function() {
         async deleteAllImages(event ,listOfImages){
             let email = document.getElementById("emailFromSession").innerText;
 
-             fetch('/api/deleteAllSaveImagesUser', {
+           await this.getImageFromDB(listOfImages);
+
+            fetch('/api/deleteAllSaveImagesUser', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
