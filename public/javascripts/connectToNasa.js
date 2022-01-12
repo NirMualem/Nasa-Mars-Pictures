@@ -167,15 +167,10 @@ const NasaModal = (function() {
                         body:JSON.stringify(data)
 
                     })
-                        .then(response => response.json())
-                        .then(result => {
-                            this.getImageFromDB(listOfImages);
-                            console.log(listOfImages);
-                        })
                         .catch(error => {
                             console.error('Error:', error);
                         });
-
+            this.getImageFromDB(listOfImages);
             }
 
         async deleteAllImages(event ,listOfImages){
