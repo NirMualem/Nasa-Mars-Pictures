@@ -117,16 +117,14 @@ const NasaModal = (function() {
                 },
                 body:JSON.stringify(data)
             })
-                .then(response => response.json())
-                .then(result => {
-                    console.log('Success:', result);
+                .then(response => {
+
+                    //update the images in the screen.
+                    this.getImageFromDB(listOfImages)
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
-
-            //update the images in the screen.
-            this.getImageFromDB(listOfImages);
         }
 
         async getImageFromDB (listOfImages) {
@@ -143,6 +141,10 @@ const NasaModal = (function() {
                         }
                     this.htmlAssingCarousel(this.generateHTMLCarousel(listOfImages));
                     this.htmlAssingSaveImage(this.generateHTMLSave(listOfImages));
+
+                    for (let button of document.getElementsByName("button-x")) {
+                        document.getElementById(button.id).addEventListener('click',(event)=>this.clickDeleted(event,listOfImages,button.id)
+                        )};
                     //console.log(JSON.stringify(json))
                 })
                 .catch(function(err) {
@@ -151,33 +153,30 @@ const NasaModal = (function() {
                 });
         }
 
-        //check if button delete clicked and remove from html.
-        async clickDeleted(event ,listOfImages)
+        clickDeleted(event,listOfImages,id)
         {
-            for (let button of document.getElementsByName("button-x")) {
-                document.getElementById(button.id).addEventListener('click', () => {
                     let email = document.getElementById("emailFromSession").innerText;
+
+                    let data = {email:email,imageId:id};
 
                      fetch('/api/deleteSaveImagesForUser', {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body:JSON.stringify({email:email,imageId:button.id})
+                        body:JSON.stringify(data)
 
                     })
                         .then(response => response.json())
                         .then(result => {
-                            console.log('Success:', result);
+                            this.getImageFromDB(listOfImages);
+                            console.log(listOfImages);
                         })
                         .catch(error => {
                             console.error('Error:', error);
                         });
-                    this.getImageFromDB(listOfImages);
-                });
 
             }
-        }
 
         async deleteAllImages(event ,listOfImages){
             let email = document.getElementById("emailFromSession").innerText;
@@ -419,7 +418,7 @@ const NasaModal = (function() {
         document.getElementById("Clear-button").addEventListener("click",listOfImages.clearResults );
         document.getElementById("delete-all").addEventListener("click",(event) => listOfImages.deleteAllImages(event ,listOfImages) );
 
-        document.addEventListener('click', function(event) {
-                listOfImages.clickDeleted(event, listOfImages);
-        });
+        // document.addEventListener('click', function(event) {
+        //         listOfImages.clickDeleted(event, listOfImages);
+        // });
     });
