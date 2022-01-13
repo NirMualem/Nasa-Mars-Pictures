@@ -417,4 +417,13 @@ const NasaModal = (function() {
         document.getElementById("Stop-Slide-view").addEventListener("click",listOfImages.stopSlideShow);
         document.getElementById("Clear-button").addEventListener("click",listOfImages.clearResults );
         document.getElementById("delete-all").addEventListener("click",(event) => listOfImages.deleteAllImages(event ,listOfImages) );
+
+        window.addEventListener('offline', function(event){
+            alert("You are offline please turn on internet connection to run website");
+            location.reload();
+        });
+        window.addEventListener('online', function(event){
+            alert("internet connection return");
+            location.reload();
+        });
     });
