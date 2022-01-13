@@ -110,6 +110,7 @@ const NasaModal = (function() {
             let data = {"imageId": id, "earthDate": earthDate,"sol":sol,
                                         "camera":camera,"mission":mission,"path": link,"email":email};
 
+            document.querySelector("#gif-loading").innerHTML = "<img src='../images/loading1.gif' alt='searching'>";
             await fetch('/api/addSaveImagesForUser', {
                 method: 'POST',
                 headers: {
@@ -123,11 +124,15 @@ const NasaModal = (function() {
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                });
+                })
+                .finally(end=>{
+                    document.querySelector("#gif-loading").innerHTML = "";
+                })
         }
 
         async getImageFromDB (listOfImages) {
             let email = document.getElementById("emailFromSession").innerText;
+            document.querySelector("#gif-loading").innerHTML = "<img src='../images/loading1.gif' alt='searching'>";
             await fetch('/api/saveImages/'+ email)
                 .then(res => res.json())
                 .then(json =>{
@@ -149,7 +154,10 @@ const NasaModal = (function() {
                 .catch(function(err) {
                     // should display some error on page to inform the user
                     console.log('Fetch Error :', err);
-                });
+                })
+                .finally(end=>{
+                    document.querySelector("#gif-loading").innerHTML = "";
+                })
         }
 
         clickDeleted(event,listOfImages,id)
@@ -157,18 +165,20 @@ const NasaModal = (function() {
                     let email = document.getElementById("emailFromSession").innerText;
 
                     let data = {email:email,imageId:id};
-
+                    document.querySelector("#gif-loading").innerHTML = "<img src='../images/loading1.gif' alt='searching'>";
                      fetch('/api/deleteSaveImagesForUser', {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body:JSON.stringify(data)
-
                     })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
+                    .catch(error => {
+                        console.error('Error:', error);
+                    })
+                    .finally(end=>{
+                      document.querySelector("#gif-loading").innerHTML = "";
+                    })
             this.getImageFromDB(listOfImages);
             }
 
@@ -177,17 +187,20 @@ const NasaModal = (function() {
 
            await this.getImageFromDB(listOfImages);
 
-            fetch('/api/deleteAllSaveImagesUser', {
+           document.querySelector("#gif-loading").innerHTML = "<img src='../images/loading1.gif' alt='searching'>";
+             fetch('/api/deleteAllSaveImagesUser', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body:JSON.stringify({email:email})
             })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            .finally(end=>{
+                 document.querySelector("#gif-loading").innerHTML = "";
+             })
            await this.getImageFromDB(listOfImages);
         }
 
@@ -348,14 +361,10 @@ const NasaModal = (function() {
                     this.htmlAssing(res);
                     for (const btn of document.getElementsByClassName("btn-save"))
                         btn.addEventListener('click' ,(event) => this.addToSavedImage(event,listOfImages));
-
-
                 })
                 .catch(function() {
-                    document.querySelector("#data").innerHTML = "Sorry, the request failed...";
-                }).finally(function() {
-
-            });
+                    document.querySelector("#photos-result").innerHTML = "Sorry, the request failed...";
+                })
         }
     };
     return classes;

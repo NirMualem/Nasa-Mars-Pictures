@@ -68,7 +68,7 @@ exports.deleteSaveImagesForUser = (req, res, next) => {
 exports.deleteAllSaveImagesUser = (req, res, next) => {
 
     if (req.session.auth) {
-        return db.Images.destroy({where:{email:req.body.email}
+        db.Images.destroy({where:{email:req.body.email}
         })
             .catch((err) => {
                 res.redirect("/");
