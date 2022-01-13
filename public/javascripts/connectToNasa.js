@@ -408,8 +408,4 @@ const NasaModal = (function() {
         document.getElementById("Stop-Slide-view").addEventListener("click",listOfImages.stopSlideShow);
         document.getElementById("Clear-button").addEventListener("click",listOfImages.clearResults );
         document.getElementById("delete-all").addEventListener("click",(event) => listOfImages.deleteAllImages(event ,listOfImages) );
-
-        // document.addEventListener('click', function(event) {
-        //         listOfImages.clickDeleted(event, listOfImages);
-        // });
     });

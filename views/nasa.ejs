@@ -10,6 +10,11 @@
     <title>Exercise 3 - Internet Programming Course template</title>
 </head>
 <body>
+<script type="text/javascript">
+    function preventBack(){window.history.forward();}
+    setTimeout("preventBack()", 0);
+    window.onunload=function(){null};
+</script>
 <div class="container">
     <div class="row text-center">
         <div class="col" style="position: relative;">

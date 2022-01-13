@@ -112,6 +112,7 @@ exports.postPassword = (req, res, next) => {
 
 exports.getLogout=(req, res, next) => {
   req.session.auth = false;
+
   res.redirect("/");
 }
 
