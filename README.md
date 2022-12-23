@@ -13,6 +13,7 @@ A started template for your project
 Open console, execute : node bin/www
 </p>
 <p>
+open and start using WebstormProjects.
 Then open your browser at http://localhost:3000
 </p>
 <h1>Assumptions</h1>
